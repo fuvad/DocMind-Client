@@ -86,6 +86,41 @@ function ProjectPage({ params }: ProjectPageProps) {
     loadAllData();
   }, [userId, projectId]);
 
+  useEffect(() => {
+
+    // looks if all the docs are either completed or failed (settled)
+    const hasProcessingDocuments = data.documents.some(
+      (doc) =>
+        doc.processing_status &&
+        !["completed", "failed"].includes(doc.processing_status)
+    );
+
+    if (!hasProcessingDocuments) {
+      return;
+    }
+
+    // If there's pending or unsettled
+    const pollInterval = setInterval(async () => {
+      try {
+        const token = await getToken();
+
+        const documentsRes = await apiClient.get(
+          `/api/projects/${projectId}/files`,
+          token
+        );
+
+        setData((prev) => ({
+          ...prev,
+          documents: documentsRes.data,
+        }));
+      } catch (err) {
+        console.error("Polling error:", err);
+      }
+    }, 2000);    // 2000 -> 2 sec
+
+    return () => clearInterval(pollInterval);
+  }, [data.documents, projectId, getToken]);
+
   // Chat-related methods
   const handleCreateNewChat = async () => {
     if (!userId) return;
