@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { useCustomAuth as useAuth } from "@/components/auth/AuthWrapper";
 import { useRouter } from "next/navigation";
 
 import { ProjectsGrid } from "@/components/projects/ProjectsGrid";

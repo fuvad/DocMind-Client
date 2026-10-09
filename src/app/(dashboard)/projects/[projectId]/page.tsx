@@ -4,7 +4,7 @@ import React, { use, useEffect, useState } from "react";
 import { ConversationsList } from "@/components/projects/ConversationsList";
 import { KnowledgeBaseSidebar } from "@/components/projects/KnowledgeBaseSidebar";
 import { FileDetailsModal } from "@/components/projects/FileDetailsModal";
-import { useAuth } from "@clerk/nextjs";
+import { useCustomAuth as useAuth } from "@/components/auth/AuthWrapper";
 import { apiClient } from "@/lib/api";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { NotFound } from "@/components/ui/NotFound";

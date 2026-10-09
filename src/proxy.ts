@@ -1,6 +1,12 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
+import type { NextRequest, NextFetchEvent } from 'next/server';
 
-export default clerkMiddleware();
+export default function middleware(req: NextRequest, evt: NextFetchEvent) {
+  if (process.env.NEXT_PUBLIC_IS_DEMO === "true") {
+    return;
+  }
+  return clerkMiddleware()(req, evt);
+}
 
 export const config = {
   matcher: [

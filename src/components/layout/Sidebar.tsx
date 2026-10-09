@@ -1,12 +1,13 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
-import { Plus, Briefcase, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { Plus, Briefcase, PanelLeftClose, PanelLeftOpen, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isDemo = process.env.NEXT_PUBLIC_IS_DEMO === "true";
 
   const router = useRouter();
   const pathname = usePathname();
@@ -84,9 +85,15 @@ export function Sidebar() {
             isCollapsed ? "justify-center" : "gap-3"
           }`}
         >
-          <UserButton />
+          {isDemo ? (
+            <UserCircle size={32} className="text-gray-400" />
+          ) : (
+            <UserButton />
+          )}
           {!isCollapsed && (
-            <span className="text-sm text-gray-400">Profile</span>
+            <span className="text-sm text-gray-400">
+              {isDemo ? "Demo User" : "Profile"}
+            </span>
           )}
         </div>
       </div>

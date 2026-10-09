@@ -1,7 +1,7 @@
 "use client";
 
 import { use, useEffect, useState, useRef } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { useCustomAuth as useAuth } from "@/components/auth/AuthWrapper";
 import { ChatInterface } from "@/components/chat/ChatInterface";
 import { ChatWithMessages, Message } from "@/lib/types";
 import { apiClient } from "@/lib/api";
@@ -93,8 +93,6 @@ export default function ProjectChatPage({ params }: ProjectChatPageProps) {
       const streamUrl = new URL(
         `${API_BASE_URL}/api/projects/${projectId}/chats/${currentChatData.id}/messages/stream`
       );
-      streamUrl.searchParams.set("token", token || "");
-      streamUrl.searchParams.set("clerk_id", userId);
 
       const response = await fetch(streamUrl.toString(), {
         method: "POST",
@@ -102,6 +100,7 @@ export default function ProjectChatPage({ params }: ProjectChatPageProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ content }),
+        credentials: "include",
         signal: abortControllerRef.current.signal,
       });
 

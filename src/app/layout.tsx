@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
+import { DemoAuthProvider } from "@/components/auth/DemoAuthProvider";
+import { CustomAuthProvider } from "@/components/auth/AuthWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,16 +26,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <ClerkProvider afterSignOutUrl={"/sign-in"}>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+  const isDemo = process.env.NEXT_PUBLIC_IS_DEMO === "true";
+
+  const content = (
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <CustomAuthProvider>
           {children}
-          <Toaster position="top-center" />
-        </body>
-      </html>
-    </ClerkProvider>
+        </CustomAuthProvider>
+        <Toaster position="top-center" />
+      </body>
+    </html>
   );
+
+  if (isDemo) {
+    return <DemoAuthProvider>{content}</DemoAuthProvider>;
+  }
+
+  return <ClerkProvider afterSignOutUrl={"/sign-in"}>{content}</ClerkProvider>;
 }

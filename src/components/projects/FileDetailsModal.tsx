@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { useCustomAuth as useAuth } from "@/components/auth/AuthWrapper";
 import { apiClient } from "@/lib/api";
 import { ProjectDocument } from "@/lib/types";
 import { GenericStep } from "./document-details/GenericStep";

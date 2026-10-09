@@ -13,6 +13,7 @@ export const apiClient = {
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers,
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -35,6 +36,7 @@ export const apiClient = {
       method: "POST",
       headers,
       body: JSON.stringify(data),
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -57,6 +59,7 @@ export const apiClient = {
       method: "PUT",
       headers,
       body: JSON.stringify(data),
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -76,6 +79,7 @@ export const apiClient = {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers,
       method: "DELETE",
+      credentials: "include",
     });
 
     if (!response.ok) {
