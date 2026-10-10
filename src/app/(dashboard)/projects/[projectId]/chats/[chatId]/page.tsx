@@ -98,9 +98,11 @@ export default function ProjectChatPage({ params }: ProjectChatPageProps) {
         "Content-Type": "application/json",
       };
       
+      const isDemo = process.env.NEXT_PUBLIC_IS_DEMO === "true";
+      
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
-      } else {
+      } else if (!isDemo) {
         throw new Error("User session expired. Please sign in again.");
       }
 
