@@ -94,11 +94,19 @@ export default function ProjectChatPage({ params }: ProjectChatPageProps) {
         `${API_BASE_URL}/api/projects/${projectId}/chats/${currentChatData.id}/messages/stream`
       );
 
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        throw new Error("User session expired. Please sign in again.");
+      }
+
       const response = await fetch(streamUrl.toString(), {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify({ content }),
         credentials: "include",
         signal: abortControllerRef.current.signal,
